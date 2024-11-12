@@ -1,4 +1,4 @@
-package com.maal.gupy.controller;
+package com.maal.gupy.controllers;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
