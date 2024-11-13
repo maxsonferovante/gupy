@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  postgres:15:
+    container_name: postgres-gupy
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: gupy
+    ports:
+      - 5432:5432
