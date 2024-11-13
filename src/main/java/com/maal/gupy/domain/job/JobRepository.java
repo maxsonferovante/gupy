@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface JobRepository extends JpaRepository<Job, String> {
     List<Job> findAllByisRemoteWork(boolean isRemoteWork);
+    List<Job> findAllByDescription(String description);
 }

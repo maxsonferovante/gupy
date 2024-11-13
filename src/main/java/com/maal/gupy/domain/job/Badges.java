@@ -26,4 +26,7 @@ public class Badges {
 
     private boolean friendlyBadge;
 
+    public Badges(boolean friendlyBadge) {
+        this.friendlyBadge = friendlyBadge;
+    }
 }

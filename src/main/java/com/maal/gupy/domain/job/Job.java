@@ -1,5 +1,6 @@
 package com.maal.gupy.domain.job;
 
+import com.maal.gupy.domain.job.dto.RequestJob;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -49,5 +50,25 @@ public class Job {
     private String workplaceType;
     private String careerPageUrl;
 
+    public Job(RequestJob requestJob) {
 
+        this.id = requestJob.id();
+        this.companyId = requestJob.companyId();
+        this.name = requestJob.name();
+        this.description = requestJob.description();
+        this.careerPageId = requestJob.careerPageId();
+        this.careerPageName = requestJob.careerPageName();
+        this.careerPageLogo = requestJob.careerPageLogo();
+        this.type = requestJob.type();
+        this.publishedDate = requestJob.publishedDate();
+        this.applicationDeadline = requestJob.applicationDeadline();
+        this.isRemoteWork = requestJob.isRemoteWork();
+        this.city = requestJob.city();
+        this.badges = new Badges(requestJob.badges().friendlyBadge());
+        this.disabilities = requestJob.disabilities();
+        this.workplaceType = requestJob.workplaceType();
+        this.careerPageUrl = requestJob.careerPageUrl();
+
+
+    }
 }
