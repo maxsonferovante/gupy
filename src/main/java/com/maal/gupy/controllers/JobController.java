@@ -1,5 +1,6 @@
 package com.maal.gupy.controllers;
 
+import com.maal.gupy.domain.job.Job;
 import com.maal.gupy.domain.job.JobRepository;
 import com.maal.gupy.domain.job.dto.RequestFindDescriptionInJob;
 import com.maal.gupy.domain.job.dto.RequestJob;
@@ -7,6 +8,8 @@ import com.maal.gupy.domain.job.dto.RequestListJobs;
 import com.maal.gupy.services.JobService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +26,11 @@ public class JobController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getJobs() {
-        return ResponseEntity.ok(service.getAllJobs());
+    public ResponseEntity<Page<Job>> getJobs(Pageable pageable) {
+        //    /jobs/all?page=1&size=5&sort=name,asc
+
+        Page<Job> jobs = service.getAttlJobs(pageable);
+        return ResponseEntity.ok(jobs);
     }
 
     @GetMapping("/remote")
