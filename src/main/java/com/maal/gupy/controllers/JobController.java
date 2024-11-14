@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/jobs")
 public class JobController {
@@ -17,36 +19,38 @@ public class JobController {
     @Autowired
     private JobService service;
 
+
+
     @GetMapping("/all")
     public ResponseEntity<?> getJobs() {
-        var jobs = service.getAllJobs();
-        if (jobs.isEmpty()) {
-            return ResponseEntity.ok("No jobs found");
-        }
-        return ResponseEntity.ok(jobs);
+        return ResponseEntity.ok(service.getAllJobs());
     }
 
     @GetMapping("/remote")
     public ResponseEntity<?> getRemoteJobs() {
-        var jobs = service.findJobsisRemoteWork();
-        if (jobs.isEmpty()) {
-            return ResponseEntity.ok("No remote jobs found");
-        }
-        return ResponseEntity.ok(jobs);
+        return ResponseEntity.ok(service.findJobsisRemoteWork());
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createJob(@RequestBody @Valid RequestJob requestJob) {
+    public ResponseEntity<?> createJob(@RequestBody @Valid RequestJob requestJob) throws Exception {
         var result = service.createJob(requestJob);
         return ResponseEntity.ok("Job created with identifier: " + result);
     }
 
-    @PostMapping("/description")
-    public ResponseEntity<?> getJobsByDescription(@RequestParam @Valid RequestFindDescriptionInJob request) {
-        var jobs = service.findJobsByDescription(request);
-        if (jobs.isEmpty()) {
-            return ResponseEntity.ok("No jobs found with description: " + request.description());
-        }
-        return ResponseEntity.ok(jobs);
+    @GetMapping("/description/{description}")
+    public ResponseEntity<?> getJobsByDescription(@PathVariable String description) {
+        return ResponseEntity.ok(service.findJobsByDescription(description));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getJobsById(@PathVariable long id) {
+        return ResponseEntity.ok(
+                service.findJobById(id)
+        );
+    }
+
+    @GetMapping("/identifier/{identifier}")
+    public ResponseEntity<?> getJobsById(@PathVariable String identifier) {
+        return ResponseEntity.ok(service.findJobByIdentifier(identifier));
     }
 }

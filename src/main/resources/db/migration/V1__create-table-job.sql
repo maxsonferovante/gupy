@@ -1,8 +1,3 @@
-CREATE TABLE badges (
-                        identifier UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                        friendly_badge BOOLEAN NOT NULL
-);
-
 CREATE TABLE job (
                      identifier UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                      id BIGINT NOT NULL,
@@ -20,9 +15,7 @@ CREATE TABLE job (
                      state VARCHAR(255),
                      country VARCHAR(255),
                      job_url VARCHAR(255),
-                     badges_identifier UUID,
                      disabilities BOOLEAN NOT NULL,
                      workplace_type VARCHAR(255),
-                     career_page_url VARCHAR(255),
-                     FOREIGN KEY (badges_identifier) REFERENCES badges(identifier)
+                     career_page_url VARCHAR(255)
 );

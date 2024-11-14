@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 
 @Table(name="job")
 @Entity(name="job")
@@ -26,7 +28,7 @@ import lombok.Setter;
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String identifier;
+    private UUID identifier;
 
     private long id;
     private long companyId;
@@ -43,9 +45,6 @@ public class Job {
     private String state;
     private String country;
     private String jobUrl;
-    @ManyToOne
-    @JoinColumn(name = "badges_identifier")
-    private Badges badges;
     private boolean disabilities;
     private String workplaceType;
     private String careerPageUrl;
@@ -64,11 +63,8 @@ public class Job {
         this.applicationDeadline = requestJob.applicationDeadline();
         this.isRemoteWork = requestJob.isRemoteWork();
         this.city = requestJob.city();
-        this.badges = new Badges(requestJob.badges().friendlyBadge());
         this.disabilities = requestJob.disabilities();
         this.workplaceType = requestJob.workplaceType();
         this.careerPageUrl = requestJob.careerPageUrl();
-
-
     }
 }
