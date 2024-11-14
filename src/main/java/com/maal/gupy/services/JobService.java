@@ -30,7 +30,7 @@ public class JobService {
             var result = jobRepository.save(job);
             return result.getIdentifier();
         }
-        throw new EntityExistsException("Job already exists with id " + jobsExist.getFirst().getIdentifier());
+        throw new EntityExistsException();
     };
 
     public List<UUID> createBatchJob(RequestListJobs requestListJobs) throws Exception {
@@ -68,7 +68,7 @@ public class JobService {
     public void deleteJobById(Long id) {
         List<Job> job = jobRepository.findById(id);
         if (job.isEmpty()) {
-            throw new EntityNotFoundException("Job with id " + id + " not found");
+            throw new EntityNotFoundException();
         }
         jobRepository.deleteAll(job);
     }
