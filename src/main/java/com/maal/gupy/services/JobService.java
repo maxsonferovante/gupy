@@ -7,9 +7,11 @@ import com.maal.gupy.domain.job.dto.RequestJob;
 import com.maal.gupy.domain.job.dto.RequestListJobs;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,7 +62,9 @@ public class JobService {
         return jobRepository.findByIdentifier(UUID.fromString(identifier));
     }
 
+//    @Transactional
     public Page<Job> getAttlJobs(Pageable pageable) {
+//        jobRepository.removeDuplicateJobs();
         return jobRepository.findAll(pageable);
     }
 
