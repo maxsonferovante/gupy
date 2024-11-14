@@ -3,6 +3,7 @@ package com.maal.gupy.controllers;
 import com.maal.gupy.domain.job.JobRepository;
 import com.maal.gupy.domain.job.dto.RequestFindDescriptionInJob;
 import com.maal.gupy.domain.job.dto.RequestJob;
+import com.maal.gupy.domain.job.dto.RequestListJobs;
 import com.maal.gupy.services.JobService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,11 @@ public class JobController {
     public ResponseEntity<?> createJob(@RequestBody @Valid RequestJob requestJob) throws Exception {
         var result = service.createJob(requestJob);
         return ResponseEntity.ok("Job created with identifier: " + result);
+    }
+
+    @PostMapping("/create/batch")
+    public ResponseEntity<?> createBatchJobs(@RequestBody @Valid RequestListJobs listJobs) throws Exception {
+        return  ResponseEntity.ok(service.createBatchJob(listJobs));
     }
 
     @GetMapping("/description/{description}")
