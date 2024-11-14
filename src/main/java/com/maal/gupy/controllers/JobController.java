@@ -65,4 +65,10 @@ public class JobController {
     public ResponseEntity<?> getJobsById(@PathVariable String identifier) {
         return ResponseEntity.ok(service.findJobByIdentifier(identifier));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteJobById(@PathVariable Long id) {
+        service.deleteJobById(id);
+        return ResponseEntity.noContent().build();
+    };
 }

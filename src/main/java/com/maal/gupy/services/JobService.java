@@ -6,6 +6,7 @@ import com.maal.gupy.domain.job.JobRepository;
 import com.maal.gupy.domain.job.dto.RequestJob;
 import com.maal.gupy.domain.job.dto.RequestListJobs;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +22,6 @@ public class JobService {
 
     @Autowired
     private JobRepository jobRepository;
-
-    public List<Job> getAllJobs() {
-
-        return jobRepository.findAll();
-    }
 
     public UUID createJob(RequestJob requestJob) throws Exception {
         List<Job> jobsExist = jobRepository.findById(requestJob.id());
@@ -68,4 +64,12 @@ public class JobService {
         return jobRepository.findAll(pageable);
     }
 
+
+    public void deleteJobById(Long id) {
+        List<Job> job = jobRepository.findById(id);
+        if (job.isEmpty()) {
+            throw new EntityNotFoundException("Job with id " + id + " not found");
+        }
+        jobRepository.deleteAll(job);
+    }
 }
