@@ -249,6 +249,5 @@ Sem conteúdo.
 ---
 
 ## Autor
-- **Nome:** [Seu Nome]
-- **Contato:** [seu-email@example.com]
-- **GitHub:** [https://github.com/seu-usuario](https://github.com/seu-usuario)
+- **Nome:** [Maxson Almeida]
+- **Contato:** [maxsonferovante@gmail.com]
