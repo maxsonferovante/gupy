@@ -3,6 +3,7 @@ package com.maal.gupy.services;
 import com.maal.gupy.domain.job.Job;
 import com.maal.gupy.domain.job.JobRepository;
 import com.maal.gupy.domain.job.dto.RequestJob;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -77,7 +78,39 @@ class JobServiceTest {
         verify(this.jobRepo).save(any(Job.class));
     }
 
+    @Test
+    @DisplayName("Should Throw Exception When Job Already Exists")
+    void createJobThrowsException() {
+        RequestJob fakeRequestJob = new RequestJob(
+                1L, // id
+                101L, // companyId
+                "Software Engineer", // name
+                "Develop and maintain software solutions.", // description
+                201L, // careerPageId
+                "Tech Careers", // careerPageName
+                "https://example.com/logo.png", // careerPageLogo
+                "Full-time", // type
+                "2023-11-01", // publishedDate
+                "2023-12-01", // applicationDeadline
+                true, // isRemoteWork
+                "San Francisco", // city
+                "CA", // state
+                "USA", // country
+                "https://example.com/job/1", // jobUrl
+                false, // disabilities
+                "Hybrid", // workplaceType
+                "https://example.com/careers" // careerPageUrl
+        );
+        Job existionJob = new Job(fakeRequestJob);
+        existionJob.setIdentifier(UUID.randomUUID());
 
+        when(this.jobRepo.findById(fakeRequestJob.id())).thenReturn(Collections.singletonList(existionJob));
+
+        assertThrows(EntityExistsException.class, () -> this.jobService.createJob(fakeRequestJob));
+
+        verify(jobRepo).findById(fakeRequestJob.id());
+        verify(this.jobRepo, never()).save(any(Job.class));
+    }
 
 
     @Test
