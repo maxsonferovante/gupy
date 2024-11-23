@@ -177,6 +177,17 @@ class JobServiceTest {
     }
 
     @Test
+    @DisplayName("Should Throw Exception When Job List Is Empty")
+    void createBatchJobThrowsExceptionForEmptyList() {
+        RequestListJobs requestListJobs = new RequestListJobs(Collections.emptyList());
+
+        Exception exception = assertThrows(Exception.class, () -> jobService.createBatchJob(requestListJobs));
+        assertEquals("Job list cannot be empty", exception.getMessage());
+
+        verify(jobRepo, never()).saveAll(anyList());
+    }
+
+    @Test
     void findJobsisRemoteWork() {
     }
 

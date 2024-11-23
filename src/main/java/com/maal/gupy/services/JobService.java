@@ -11,7 +11,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +35,10 @@ public class JobService {
     };
 
     public List<UUID> createBatchJob(RequestListJobs requestListJobs) throws Exception {
+        if (requestListJobs.jobs().isEmpty()) {
+            throw new Exception("Job list cannot be empty");
+        }
+
         List<Job> jobs = requestListJobs.jobs().stream().map(Job::new).collect(Collectors.toList());
 
         List<Job> savedJobs = jobRepository.saveAll(jobs);
