@@ -3,6 +3,7 @@ package com.maal.gupy.services;
 import com.maal.gupy.domain.job.Job;
 import com.maal.gupy.domain.job.JobRepository;
 import com.maal.gupy.domain.job.dto.RequestJob;
+import com.maal.gupy.domain.job.dto.RequestListJobs;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -114,7 +116,64 @@ class JobServiceTest {
 
 
     @Test
-    void createBatchJob() {
+    @DisplayName("Should Create Multiple Jobs Successfully")
+    void createBatchJobSuccess() throws Exception {
+        // Arrange
+        RequestListJobs requestListJobs = new RequestListJobs(List.of(
+                new RequestJob(
+                        1L, // id
+                        101L, // companyId
+                        "Software Engineer", // name
+                        "Develop and maintain software solutions.", // description
+                        201L, // careerPageId
+                        "Tech Careers", // careerPageName
+                        "https://example.com/logo.png", // careerPageLogo
+                        "Full-time", // type
+                        "2023-11-01", // publishedDate
+                        "2023-12-01", // applicationDeadline
+                        true, // isRemoteWork
+                        "San Francisco", // city
+                        "CA", // state
+                        "USA", // country
+                        "https://example.com/job/1", // jobUrl
+                        false, // disabilities
+                        "Hybrid", // workplaceType
+                        "https://example.com/careers" // careerPageUrl
+                ),
+                new RequestJob(
+                        1L, // id
+                        101L, // companyId
+                        "Software Engineer", // name
+                        "Develop and maintain software solutions.", // description
+                        201L, // careerPageId
+                        "Tech Careers", // careerPageName
+                        "https://example.com/logo.png", // careerPageLogo
+                        "Full-time", // type
+                        "2023-11-01", // publishedDate
+                        "2023-12-01", // applicationDeadline
+                        true, // isRemoteWork
+                        "San Francisco", // city
+                        "CA", // state
+                        "USA", // country
+                        "https://example.com/job/1", // jobUrl
+                        false, // disabilities
+                        "Hybrid", // workplaceType
+                        "https://example.com/careers" // careerPageUrl
+                )
+        ));
+
+        List<Job> mockJobs = requestListJobs.jobs().stream().map(Job::new).collect(Collectors.toList());
+        mockJobs.forEach(job -> job.setIdentifier(UUID.randomUUID()));
+
+        when(jobRepo.saveAll(anyList())).thenReturn(mockJobs);
+
+        // Act
+        List<UUID> result = jobService.createBatchJob(requestListJobs);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(mockJobs.size(), result.size()); // Verifica que todos os IDs foram retornados
+        verify(jobRepo).saveAll(anyList()); // Verifica que saveAll foi chamado
     }
 
     @Test
