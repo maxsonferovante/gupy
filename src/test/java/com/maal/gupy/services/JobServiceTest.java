@@ -2,6 +2,7 @@ package com.maal.gupy.services;
 
 import com.maal.gupy.domain.job.Job;
 import com.maal.gupy.domain.job.JobRepository;
+import com.maal.gupy.domain.job.dto.RequestJob;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -37,7 +39,41 @@ class JobServiceTest {
     }
 
     @Test
-    void createJob() {
+    void createJobSuccess() throws Exception {
+
+        RequestJob fakeRequestJob = new RequestJob(
+                1L, // id
+                101L, // companyId
+                "Software Engineer", // name
+                "Develop and maintain software solutions.", // description
+                201L, // careerPageId
+                "Tech Careers", // careerPageName
+                "https://example.com/logo.png", // careerPageLogo
+                "Full-time", // type
+                "2023-11-01", // publishedDate
+                "2023-12-01", // applicationDeadline
+                true, // isRemoteWork
+                "San Francisco", // city
+                "CA", // state
+                "USA", // country
+                "https://example.com/job/1", // jobUrl
+                false, // disabilities
+                "Hybrid", // workplaceType
+                "https://example.com/careers" // careerPageUrl
+        );
+        Job mockJob = new Job(fakeRequestJob);
+        mockJob.setIdentifier(UUID.randomUUID());
+
+        when(this.jobRepo.findById(fakeRequestJob.id())).thenReturn(Collections.emptyList());
+
+        when(this.jobRepo.save(any(Job.class))).thenReturn(mockJob);
+
+        UUID requestId = this.jobService.createJob(fakeRequestJob);
+
+        assertNotNull(requestId);
+        assertEquals(mockJob.getIdentifier(), requestId);
+        verify(this.jobRepo).findById(fakeRequestJob.id());
+        verify(this.jobRepo).save(any(Job.class));
     }
 
     @Test
