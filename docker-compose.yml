@@ -1,9 +1,9 @@
 version: '3.9'
 
 services:
-  postgres:15:
+  postgres:
     container_name: postgres-gupy
-    image: postgres
+    image: postgres:15
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: admin
